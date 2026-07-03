@@ -3,163 +3,190 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Football Card Price Checker | AI-Powered Card Valuation</title>
+    <title>Card Value Pro - AI-Powered Card Analysis</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
-        <!-- Header -->
-        <div class="header">
-            <div class="badge">🤖 AI-POWERED CARD VALUATION</div>
-            <h1>Football Card<br><span class="highlight">Price Checker</span></h1>
-            <p>Upload your football cards or album pages. AI identifies each card, checks trusted marketplaces, and gives you real-time pricing in any currency.</p>
-            <div class="marketplaces">
-                <span class="marketplace-badge">eBay</span>
-                <span class="marketplace-badge">Beckett</span>
-                <span class="marketplace-badge">COMC</span>
-                <span class="marketplace-badge">CSGAuctions</span>
-            </div>
-        </div>
-
-        <!-- Upload Section -->
-        <div class="card-section">
-            <div class="section-header">
-                <div class="icon">📤</div>
-                <h2>Upload Your Cards</h2>
-                <p>Photos of individual cards or full album pages</p>
-            </div>
-
-            <div class="upload-area" id="uploadArea">
-                <div class="upload-content">
-                    <div class="upload-icon">⬇️</div>
-                    <p class="upload-text">Drop your card images here or click to browse</p>
-                    <p class="upload-subtext">Supports JPG, PNG, WEBP • Single cards or album pages</p>
+    <div class="page-wrapper">
+        <!-- Navigation -->
+        <nav class="navbar">
+            <div class="nav-container">
+                <div class="nav-brand">Card Value Pro</div>
+                <div class="nav-tabs">
+                    <button class="nav-tab active" data-tab="analyzer">Card Analyzer</button>
+                    <button class="nav-tab" data-tab="guide">Condition Guide</button>
                 </div>
-                <input type="file" id="fileInput" multiple accept="image/jpeg,image/png,image/webp" hidden>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <div class="container">
+            <!-- Card Analyzer Tab -->
+            <div class="tab-content active" id="analyzer">
+                <div class="hero-section">
+                    <h1>Card Value Pro</h1>
+                    <p>AI-powered card detection and professional market pricing analysis</p>
+                </div>
+
+                <div class="content-grid">
+                    <!-- Left Column: Upload -->
+                    <div class="left-column">
+                        <div class="section-card">
+                            <h2>Upload Card Images</h2>
+                            <p class="section-subtitle">Upload photos of your cards for AI analysis</p>
+                            
+                            <div class="upload-zone" id="uploadZone">
+                                <div class="upload-content">
+                                    <div class="upload-icon">↓</div>
+                                    <p class="upload-main">Drag and drop images here</p>
+                                    <p class="upload-sub">or click to browse</p>
+                                    <p class="upload-formats">JPG, PNG, WEBP up to 10MB each</p>
+                                </div>
+                                <input type="file" id="fileInput" multiple accept="image/jpeg,image/png,image/webp" hidden>
+                            </div>
+
+                            <!-- Image Preview Grid -->
+                            <div id="previewGrid" class="preview-grid" style="display: none;">
+                                <div id="previewContainer"></div>
+                            </div>
+
+                            <div class="button-row">
+                                <button class="btn btn-secondary" id="browseBtn">Browse Files</button>
+                                <button class="btn btn-secondary" id="clearBtn" style="display: none;">Clear All</button>
+                            </div>
+                        </div>
+
+                        <!-- Currency Selector -->
+                        <div class="section-card">
+                            <h2>Display Currency</h2>
+                            <select id="currencySelect" class="currency-dropdown">
+                                <option value="USD">USD - US Dollar</option>
+                                <option value="EUR">EUR - Euro</option>
+                                <option value="GBP">GBP - British Pound</option>
+                                <option value="JPY">JPY - Japanese Yen</option>
+                                <option value="CNY">CNY - Chinese Yuan</option>
+                                <option value="AUD">AUD - Australian Dollar</option>
+                                <option value="CAD">CAD - Canadian Dollar</option>
+                                <option value="CHF">CHF - Swiss Franc</option>
+                                <option value="INR">INR - Indian Rupee</option>
+                                <option value="MXN">MXN - Mexican Peso</option>
+                            </select>
+                        </div>
+
+                        <!-- Analyze Button -->
+                        <button class="btn btn-primary btn-large" id="analyzeBtn">Analyze Cards</button>
+                    </div>
+
+                    <!-- Right Column: Results -->
+                    <div class="right-column">
+                        <div id="resultsArea" style="display: none;">
+                            <div class="section-card">
+                                <h2>Analysis Results</h2>
+                                <div id="resultsContainer" class="results-container"></div>
+                            </div>
+                        </div>
+
+                        <div id="loadingState" class="loading-state" style="display: none;">
+                            <div class="spinner"></div>
+                            <p>Analyzing cards with AI...</p>
+                            <p class="loading-sub">This may take 10-30 seconds</p>
+                        </div>
+
+                        <div id="emptyState" class="empty-state">
+                            <p>Upload card images to begin analysis</p>
+                        </div>
+                    </div>
+                </div>
             </div>
 
-            <!-- Image Preview -->
-            <div id="imagePreview" class="image-preview" style="display: none;">
-                <h3>✅ Selected Images:</h3>
-                <div id="previewContainer" class="preview-container"></div>
+            <!-- Condition Guide Tab -->
+            <div class="tab-content" id="guide">
+                <div class="guide-container">
+                    <h2>Card Condition Pricing Guide</h2>
+                    <p class="guide-intro">Market prices vary based on card condition. Here's how we calculate values:</p>
+                    
+                    <div class="conditions-grid">
+                        <div class="condition-card">
+                            <div class="condition-header">
+                                <h3>Mint</h3>
+                                <span class="condition-percent">100%</span>
+                            </div>
+                            <p>Perfect condition. Sharp corners, pristine surface, perfect centering. No visible wear.</p>
+                            <div class="condition-indicator mint"></div>
+                        </div>
+
+                        <div class="condition-card">
+                            <div class="condition-header">
+                                <h3>Near Mint</h3>
+                                <span class="condition-percent">90%</span>
+                            </div>
+                            <p>Barely played. Minimal wear, sharp corners, slight centering issues possible.</p>
+                            <div class="condition-indicator near-mint"></div>
+                        </div>
+
+                        <div class="condition-card">
+                            <div class="condition-header">
+                                <h3>Excellent</h3>
+                                <span class="condition-percent">80%</span>
+                            </div>
+                            <p>Light play wear. Minor creasing, slight corner wear, clean surface.</p>
+                            <div class="condition-indicator excellent"></div>
+                        </div>
+
+                        <div class="condition-card">
+                            <div class="condition-header">
+                                <h3>Very Good</h3>
+                                <span class="condition-percent">70%</span>
+                            </div>
+                            <p>Moderate wear. Visible creases, corner wear, minor surface marks.</p>
+                            <div class="condition-indicator very-good"></div>
+                        </div>
+
+                        <div class="condition-card">
+                            <div class="condition-header">
+                                <h3>Good</h3>
+                                <span class="condition-percent">60%</span>
+                            </div>
+                            <p>Heavy wear. Significant creasing, corner damage, visible surface wear.</p>
+                            <div class="condition-indicator good"></div>
+                        </div>
+
+                        <div class="condition-card">
+                            <div class="condition-header">
+                                <h3>Fair</h3>
+                                <span class="condition-percent">40%</span>
+                            </div>
+                            <p>Substantial damage. Major creases, severe corner wear, fading visible.</p>
+                            <div class="condition-indicator fair"></div>
+                        </div>
+
+                        <div class="condition-card">
+                            <div class="condition-header">
+                                <h3>Poor</h3>
+                                <span class="condition-percent">20%</span>
+                            </div>
+                            <p>Heavily damaged. Severe creasing, tears possible, significant fading.</p>
+                            <div class="condition-indicator poor"></div>
+                        </div>
+                    </div>
+
+                    <div class="pricing-info">
+                        <h3>How Pricing Works</h3>
+                        <p>Our AI analyzes your card's condition and applies the appropriate multiplier to market base prices. For example:</p>
+                        <div class="pricing-example">
+                            <p><strong>Card Market Value:</strong> $100</p>
+                            <p><strong>Detected Condition:</strong> Near Mint (90%)</p>
+                            <p><strong>Your Card Value:</strong> $100 × 0.90 = <strong>$90</strong></p>
+                        </div>
+                    </div>
+                </div>
             </div>
-
-            <div class="button-group">
-                <button class="btn btn-secondary" id="takePhotoBtn">
-                    <span>📸</span> Take Photo
-                </button>
-                <button class="btn btn-secondary" id="browseBtn">
-                    <span>📁</span> Browse Files
-                </button>
-            </div>
-        </div>
-
-        <!-- Currency Selector -->
-        <div class="card-section">
-            <div class="section-header">
-                <div class="icon">💱</div>
-                <h2>Select Currency</h2>
-                <p>Prices will be shown in your chosen currency</p>
-            </div>
-
-            <div class="currency-wrapper">
-                <select id="currencySelect" class="currency-select">
-                    <option value="AED">🇦🇪 AED - UAE Dirham</option>
-                    <option value="AFN">🇦🇫 AFN - Afghan Afghani</option>
-                    <option value="ALL">🇦🇱 ALL - Albanian Lek</option>
-                    <option value="AMD">🇦🇲 AMD - Armenian Dram</option>
-                    <option value="ARS">🇦🇷 ARS - Argentine Peso</option>
-                    <option value="AUD">🇦🇺 AUD - Australian Dollar</option>
-                    <option value="AZN">🇦🇿 AZN - Azerbaijani Manat</option>
-                    <option value="BAM">🇧🇦 BAM - Bosnia Mark</option>
-                    <option value="BDT">🇧🇩 BDT - Bangladeshi Taka</option>
-                    <option value="BGN">🇧🇬 BGN - Bulgarian Lev</option>
-                    <option value="BHD">🇧🇭 BHD - Bahraini Dinar</option>
-                    <option value="BRL">🇧🇷 BRL - Brazilian Real</option>
-                    <option value="BTC">₿ BTC - Bitcoin</option>
-                    <option value="CAD">🇨🇦 CAD - Canadian Dollar</option>
-                    <option value="CHF">🇨🇭 CHF - Swiss Franc</option>
-                    <option value="CLP">🇨🇱 CLP - Chilean Peso</option>
-                    <option value="CNY">🇨🇳 CNY - Chinese Yuan</option>
-                    <option value="COP">🇨🇴 COP - Colombian Peso</option>
-                    <option value="CRC">🇨🇷 CRC - Costa Rican Colón</option>
-                    <option value="CZK">🇨🇿 CZK - Czech Koruna</option>
-                    <option value="DKK">🇩🇰 DKK - Danish Krone</option>
-                    <option value="DOP">🇩🇴 DOP - Dominican Peso</option>
-                    <option value="EGP">🇪🇬 EGP - Egyptian Pound</option>
-                    <option value="EUR">🇪🇺 EUR - Euro</option>
-                    <option value="GBP">🇬🇧 GBP - British Pound</option>
-                    <option value="GEL">🇬🇪 GEL - Georgian Lari</option>
-                    <option value="GHS">🇬🇭 GHS - Ghanaian Cedi</option>
-                    <option value="HKD">🇭🇰 HKD - Hong Kong Dollar</option>
-                    <option value="HNL">🇭🇳 HNL - Honduran Lempira</option>
-                    <option value="HRK">🇭🇷 HRK - Croatian Kuna</option>
-                    <option value="HUF">🇭🇺 HUF - Hungarian Forint</option>
-                    <option value="IDR">🇮🇩 IDR - Indonesian Rupiah</option>
-                    <option value="ILS">🇮🇱 ILS - Israeli Shekel</option>
-                    <option value="INR">🇮🇳 INR - Indian Rupee</option>
-                    <option value="ISK">🇮🇸 ISK - Icelandic Króna</option>
-                    <option value="JPY">🇯🇵 JPY - Japanese Yen</option>
-                    <option value="KES">🇰🇪 KES - Kenyan Shilling</option>
-                    <option value="KRW">🇰🇷 KRW - South Korean Won</option>
-                    <option value="KWD">🇰🇼 KWD - Kuwaiti Dinar</option>
-                    <option value="KZT">🇰🇿 KZT - Kazakhstani Tenge</option>
-                    <option value="LBP">🇱🇧 LBP - Lebanese Pound</option>
-                    <option value="LKR">🇱🇰 LKR - Sri Lankan Rupee</option>
-                    <option value="MAD">🇲🇦 MAD - Moroccan Dirham</option>
-                    <option value="MXN">🇲🇽 MXN - Mexican Peso</option>
-                    <option value="MYR">🇲🇾 MYR - Malaysian Ringgit</option>
-                    <option value="NGN">🇳🇬 NGN - Nigerian Naira</option>
-                    <option value="NOK">🇳🇴 NOK - Norwegian Krone</option>
-                    <option value="NZD">🇳🇿 NZD - New Zealand Dollar</option>
-                    <option value="PEN">🇵🇪 PEN - Peruvian Sol</option>
-                    <option value="PHP">🇵🇭 PHP - Philippine Peso</option>
-                    <option value="PKR">🇵🇰 PKR - Pakistani Rupee</option>
-                    <option value="PLN">🇵🇱 PLN - Polish Zloty</option>
-                    <option value="RON">🇷🇴 RON - Romanian Leu</option>
-                    <option value="RUB">🇷🇺 RUB - Russian Ruble</option>
-                    <option value="SAR">🇸🇦 SAR - Saudi Riyal</option>
-                    <option value="SEK">🇸🇪 SEK - Swedish Krona</option>
-                    <option value="SGD">🇸🇬 SGD - Singapore Dollar</option>
-                    <option value="THB">🇹🇭 THB - Thai Baht</option>
-                    <option value="TRY">🇹🇷 TRY - Turkish Lira</option>
-                    <option value="TWD">🇹🇼 TWD - Taiwan Dollar</option>
-                    <option value="UAH">🇺🇦 UAH - Ukrainian Hryvnia</option>
-                    <option value="USD" selected>🇺🇸 USD - US Dollar</option>
-                    <option value="UYU">🇺🇾 UYU - Uruguayan Peso</option>
-                    <option value="VND">🇻🇳 VND - Vietnamese Dong</option>
-                    <option value="ZAR">🇿🇦 ZAR - South African Rand</option>
-                </select>
-                <span id="selectedCurrencyDisplay" class="currency-display">USD 🇺🇸</span>
-            </div>
-
-            <button class="btn btn-primary" id="analyzeBtn">
-                <span>🔍</span> Analyze & Price Cards
-            </button>
-        </div>
-
-        <!-- Results Section -->
-        <div class="card-section" id="resultsSection" style="display: none;">
-            <div class="section-header">
-                <div class="icon">✅</div>
-                <h2>Card Valuations</h2>
-            </div>
-
-            <div id="cardsResults" class="cards-grid">
-                <!-- Results will populate here -->
-            </div>
-        </div>
-
-        <!-- Loading State -->
-        <div class="loading" id="loadingState" style="display: none;">
-            <div class="spinner"></div>
-            <p>Analyzing your cards with AI...</p>
         </div>
     </div>
 
     <!-- Audio Elements -->
-    <audio id="moneyCountingAudio" preload="auto"></audio>
-    <audio id="beepAudio" preload="auto"></audio>
+    <audio id="moneySound" preload="auto"></audio>
+    <audio id="completeSound" preload="auto"></audio>
 
     <script src="script.js"></script>
 </body>

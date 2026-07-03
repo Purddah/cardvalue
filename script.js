@@ -1,259 +1,189 @@
-// All world currencies in alphabetical order
-const CURRENCIES = {
-    'AED': { name: 'UAE Dirham', flag: '🇦🇪' },
-    'AFN': { name: 'Afghan Afghani', flag: '🇦🇫' },
-    'ALL': { name: 'Albanian Lek', flag: '🇦🇱' },
-    'AMD': { name: 'Armenian Dram', flag: '🇦🇲' },
-    'ARS': { name: 'Argentine Peso', flag: '🇦🇷' },
-    'AUD': { name: 'Australian Dollar', flag: '🇦🇺' },
-    'AZN': { name: 'Azerbaijani Manat', flag: '🇦🇿' },
-    'BAM': { name: 'Bosnia Mark', flag: '🇧🇦' },
-    'BDT': { name: 'Bangladeshi Taka', flag: '🇧🇩' },
-    'BGN': { name: 'Bulgarian Lev', flag: '🇧🇬' },
-    'BHD': { name: 'Bahraini Dinar', flag: '🇧🇭' },
-    'BRL': { name: 'Brazilian Real', flag: '🇧🇷' },
-    'BTC': { name: 'Bitcoin', flag: '₿' },
-    'CAD': { name: 'Canadian Dollar', flag: '🇨🇦' },
-    'CHF': { name: 'Swiss Franc', flag: '🇨🇭' },
-    'CLP': { name: 'Chilean Peso', flag: '🇨🇱' },
-    'CNY': { name: 'Chinese Yuan', flag: '🇨🇳' },
-    'COP': { name: 'Colombian Peso', flag: '🇨🇴' },
-    'CRC': { name: 'Costa Rican Colón', flag: '🇨🇷' },
-    'CZK': { name: 'Czech Koruna', flag: '🇨🇿' },
-    'DKK': { name: 'Danish Krone', flag: '🇩🇰' },
-    'DOP': { name: 'Dominican Peso', flag: '🇩🇴' },
-    'EGP': { name: 'Egyptian Pound', flag: '🇪🇬' },
-    'EUR': { name: 'Euro', flag: '🇪🇺' },
-    'GBP': { name: 'British Pound', flag: '🇬🇧' },
-    'GEL': { name: 'Georgian Lari', flag: '🇬🇪' },
-    'GHS': { name: 'Ghanaian Cedi', flag: '🇬🇭' },
-    'HKD': { name: 'Hong Kong Dollar', flag: '🇭🇰' },
-    'HNL': { name: 'Honduran Lempira', flag: '🇭🇳' },
-    'HRK': { name: 'Croatian Kuna', flag: '🇭🇷' },
-    'HUF': { name: 'Hungarian Forint', flag: '🇭🇺' },
-    'IDR': { name: 'Indonesian Rupiah', flag: '🇮🇩' },
-    'ILS': { name: 'Israeli Shekel', flag: '🇮🇱' },
-    'INR': { name: 'Indian Rupee', flag: '🇮🇳' },
-    'ISK': { name: 'Icelandic Króna', flag: '🇮🇸' },
-    'JPY': { name: 'Japanese Yen', flag: '🇯🇵' },
-    'KES': { name: 'Kenyan Shilling', flag: '🇰🇪' },
-    'KRW': { name: 'South Korean Won', flag: '🇰🇷' },
-    'KWD': { name: 'Kuwaiti Dinar', flag: '🇰🇼' },
-    'KZT': { name: 'Kazakhstani Tenge', flag: '🇰🇿' },
-    'LBP': { name: 'Lebanese Pound', flag: '🇱🇧' },
-    'LKR': { name: 'Sri Lankan Rupee', flag: '🇱🇰' },
-    'MAD': { name: 'Moroccan Dirham', flag: '🇲🇦' },
-    'MXN': { name: 'Mexican Peso', flag: '🇲🇽' },
-    'MYR': { name: 'Malaysian Ringgit', flag: '🇲🇾' },
-    'NGN': { name: 'Nigerian Naira', flag: '🇳🇬' },
-    'NOK': { name: 'Norwegian Krone', flag: '🇳🇴' },
-    'NZD': { name: 'New Zealand Dollar', flag: '🇳🇿' },
-    'PEN': { name: 'Peruvian Sol', flag: '🇵🇪' },
-    'PHP': { name: 'Philippine Peso', flag: '🇵🇭' },
-    'PKR': { name: 'Pakistani Rupee', flag: '🇵🇰' },
-    'PLN': { name: 'Polish Zloty', flag: '🇵🇱' },
-    'RON': { name: 'Romanian Leu', flag: '🇷🇴' },
-    'RUB': { name: 'Russian Ruble', flag: '🇷🇺' },
-    'SAR': { name: 'Saudi Riyal', flag: '🇸🇦' },
-    'SEK': { name: 'Swedish Krona', flag: '🇸🇪' },
-    'SGD': { name: 'Singapore Dollar', flag: '🇸🇬' },
-    'THB': { name: 'Thai Baht', flag: '🇹🇭' },
-    'TRY': { name: 'Turkish Lira', flag: '🇹🇷' },
-    'TWD': { name: 'Taiwan Dollar', flag: '🇹🇼' },
-    'UAH': { name: 'Ukrainian Hryvnia', flag: '🇺🇦' },
-    'USD': { name: 'US Dollar', flag: '🇺🇸' },
-    'UYU': { name: 'Uruguayan Peso', flag: '🇺🇾' },
-    'VND': { name: 'Vietnamese Dong', flag: '🇻🇳' },
-    'ZAR': { name: 'South African Rand', flag: '🇿🇦' }
-};
-
+// Global state
 let selectedImages = [];
 let selectedCurrency = 'USD';
+const API_KEY = 'sk-proj-YOUR_CLAUDE_API_KEY'; // Replace with your API key
 
 // Initialize
 document.addEventListener('DOMContentLoaded', () => {
     initializeUI();
-    initializeAudio();
+    loadSounds();
+    setupTabNavigation();
 });
 
+function setupTabNavigation() {
+    const navTabs = document.querySelectorAll('.nav-tab');
+    const tabContents = document.querySelectorAll('.tab-content');
+
+    navTabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            const tabName = tab.getAttribute('data-tab');
+            
+            navTabs.forEach(t => t.classList.remove('active'));
+            tabContents.forEach(c => c.classList.remove('active'));
+            
+            tab.classList.add('active');
+            document.getElementById(tabName).classList.add('active');
+        });
+    });
+}
+
 function initializeUI() {
-    const uploadArea = document.getElementById('uploadArea');
+    const uploadZone = document.getElementById('uploadZone');
     const fileInput = document.getElementById('fileInput');
     const browseBtn = document.getElementById('browseBtn');
-    const takePhotoBtn = document.getElementById('takePhotoBtn');
+    const clearBtn = document.getElementById('clearBtn');
     const analyzeBtn = document.getElementById('analyzeBtn');
     const currencySelect = document.getElementById('currencySelect');
 
-    // Drag and drop
-    uploadArea.addEventListener('dragover', (e) => {
+    // Upload zone
+    uploadZone.addEventListener('click', () => fileInput.click());
+    
+    uploadZone.addEventListener('dragover', (e) => {
         e.preventDefault();
-        uploadArea.classList.add('dragover');
+        uploadZone.classList.add('dragover');
     });
 
-    uploadArea.addEventListener('dragleave', () => {
-        uploadArea.classList.remove('dragover');
+    uploadZone.addEventListener('dragleave', () => {
+        uploadZone.classList.remove('dragover');
     });
 
-    uploadArea.addEventListener('drop', (e) => {
+    uploadZone.addEventListener('drop', (e) => {
         e.preventDefault();
-        uploadArea.classList.remove('dragover');
-        const files = Array.from(e.dataTransfer.files);
-        handleFiles(files);
+        uploadZone.classList.remove('dragover');
+        handleFiles(Array.from(e.dataTransfer.files));
     });
 
-    uploadArea.addEventListener('click', () => fileInput.click());
     fileInput.addEventListener('change', (e) => handleFiles(Array.from(e.target.files)));
     browseBtn.addEventListener('click', () => fileInput.click());
-    
-    takePhotoBtn.addEventListener('click', () => {
-        const input = document.createElement('input');
-        input.type = 'file';
-        input.accept = 'image/*';
-        input.capture = 'environment';
-        input.addEventListener('change', (e) => handleFiles(Array.from(e.target.files)));
-        input.click();
-    });
-
+    clearBtn.addEventListener('click', clearImages);
     analyzeBtn.addEventListener('click', analyzeCards);
-    
-    // Currency change
     currencySelect.addEventListener('change', (e) => {
         selectedCurrency = e.target.value;
-        const currencyData = CURRENCIES[selectedCurrency];
-        document.getElementById('selectedCurrencyDisplay').textContent = `${selectedCurrency} ${currencyData.flag}`;
     });
-
-    // Set initial currency display
-    document.getElementById('selectedCurrencyDisplay').textContent = 'USD 🇺🇸';
 }
 
 function handleFiles(files) {
     const imageFiles = files.filter(f => f.type.startsWith('image/'));
-    selectedImages = imageFiles;
-    
-    if (imageFiles.length > 0) {
-        displayImagePreviews();
-    }
+    selectedImages.push(...imageFiles);
+    displayPreviews();
 }
 
-function displayImagePreviews() {
+function displayPreviews() {
     const previewContainer = document.getElementById('previewContainer');
-    const imagePreview = document.getElementById('imagePreview');
-    previewContainer.innerHTML = '';
+    const previewGrid = document.getElementById('previewGrid');
+    const clearBtn = document.getElementById('clearBtn');
     
+    if (selectedImages.length === 0) {
+        previewGrid.style.display = 'none';
+        clearBtn.style.display = 'none';
+        return;
+    }
+
+    previewContainer.innerHTML = '';
+    previewGrid.style.display = 'block';
+    clearBtn.style.display = 'block';
+
     selectedImages.forEach((file, index) => {
         const reader = new FileReader();
         reader.onload = (e) => {
             const div = document.createElement('div');
             div.className = 'preview-item';
             div.innerHTML = `
-                <img src="${e.target.result}" alt="Preview ${index + 1}">
-                <button class="remove-btn" onclick="removeImage(${index})">✕</button>
+                <img src="${e.target.result}" alt="Card ${index + 1}">
+                <button class="remove-btn" onclick="removeImage(${index})">×</button>
             `;
             previewContainer.appendChild(div);
         };
         reader.readAsDataURL(file);
     });
-    
-    imagePreview.style.display = selectedImages.length > 0 ? 'block' : 'none';
 }
 
 function removeImage(index) {
     selectedImages.splice(index, 1);
-    displayImagePreviews();
+    displayPreviews();
 }
 
-function initializeAudio() {
-    const moneyCountingAudio = document.getElementById('moneyCountingAudio');
-    moneyCountingAudio.src = createMoneyCountingSound();
-
-    const beepAudio = document.getElementById('beepAudio');
-    beepAudio.src = createBeepSound();
+function clearImages() {
+    selectedImages = [];
+    displayPreviews();
+    document.getElementById('fileInput').value = '';
 }
 
-function createMoneyCountingSound() {
+function loadSounds() {
+    // Using data URIs for sounds or external URLs
+    // For production, replace with real sound URLs
+    const moneySound = document.getElementById('moneySound');
+    const completeSound = document.getElementById('completeSound');
+    
+    // Using placeholder - replace with real sounds
+    moneySound.src = createAudioUrl('money');
+    completeSound.src = createAudioUrl('complete');
+}
+
+function createAudioUrl(type) {
     const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-    const duration = 1.0;
     const sampleRate = audioContext.sampleRate;
+    const duration = type === 'money' ? 1.2 : 0.5;
     const buffer = audioContext.createBuffer(1, duration * sampleRate, sampleRate);
     const data = buffer.getChannelData(0);
 
-    // Create realistic money counting machine sound
-    // Multiple rapid pulses simulating bill counter
-    const pulseCount = 12;
-    for (let i = 0; i < pulseCount; i++) {
-        const startSample = (i / pulseCount) * duration * sampleRate;
-        const endSample = ((i + 0.6) / pulseCount) * duration * sampleRate;
-        const freq = 400 + i * 60 + Math.sin(i * 0.5) * 100; // Variable frequency
-
-        for (let j = startSample; j < endSample; j++) {
-            const t = (j - startSample) / sampleRate;
-            // Multiple sine waves for richer sound
-            const wave1 = Math.sin(2 * Math.PI * freq * t);
-            const wave2 = Math.sin(2 * Math.PI * (freq * 1.5) * t) * 0.3;
-            data[Math.floor(j)] = (wave1 + wave2) * 0.7 * Math.exp(-t * 5);
+    if (type === 'money') {
+        // Money counter sound simulation
+        const pulses = 15;
+        for (let i = 0; i < pulses; i++) {
+            const start = (i / pulses) * duration * sampleRate;
+            const end = ((i + 0.5) / pulses) * duration * sampleRate;
+            const freq = 500 + i * 50;
+            
+            for (let j = start; j < end; j++) {
+                const t = (j - start) / sampleRate;
+                data[Math.floor(j)] = Math.sin(2 * Math.PI * freq * t) * 0.5 * Math.exp(-t * 6);
+            }
+        }
+    } else {
+        // Completion beep
+        const freq = 1000;
+        for (let i = 0; i < duration * sampleRate; i++) {
+            const t = i / sampleRate;
+            data[i] = Math.sin(2 * Math.PI * freq * t) * Math.exp(-t * 3);
         }
     }
 
-    const blob = new Blob([getWavBlob(buffer)], { type: 'audio/wav' });
-    return URL.createObjectURL(blob);
+    return blobToUrl(bufferToWav(buffer));
 }
 
-function createBeepSound() {
-    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-    const duration = 0.5;
-    const sampleRate = audioContext.sampleRate;
-    const buffer = audioContext.createBuffer(1, duration * sampleRate, sampleRate);
-    const data = buffer.getChannelData(0);
-
-    // Create double beep - first higher, then lower
-    const freq1 = 1200;
-    const freq2 = 900;
-    const midPoint = duration * sampleRate * 0.6;
-
-    for (let i = 0; i < duration * sampleRate; i++) {
-        const t = i / sampleRate;
-        const freq = i < midPoint ? freq1 : freq2;
-        const wave = Math.sin(2 * Math.PI * freq * t);
-        data[i] = wave * Math.exp(-t * 4);
-    }
-
-    const blob = new Blob([getWavBlob(buffer)], { type: 'audio/wav' });
-    return URL.createObjectURL(blob);
-}
-
-function getWavBlob(audioBuffer) {
-    const length = audioBuffer.length * audioBuffer.numberOfChannels * 2 + 44;
+function bufferToWav(buffer) {
+    const length = buffer.length * buffer.numberOfChannels * 2 + 44;
     const arrayBuffer = new ArrayBuffer(length);
     const view = new DataView(arrayBuffer);
     const channels = [];
 
-    for (let i = 0; i < audioBuffer.numberOfChannels; i++) {
-        channels.push(audioBuffer.getChannelData(i));
+    for (let i = 0; i < buffer.numberOfChannels; i++) {
+        channels.push(buffer.getChannelData(i));
     }
 
-    const writeString = (view, offset, string) => {
+    const writeString = (offset, string) => {
         for (let i = 0; i < string.length; i++) {
             view.setUint8(offset + i, string.charCodeAt(i));
         }
     };
 
-    writeString(view, 0, 'RIFF');
-    view.setUint32(4, 36 + audioBuffer.length * 2, true);
-    writeString(view, 8, 'WAVE');
-    writeString(view, 12, 'fmt ');
+    writeString(0, 'RIFF');
+    view.setUint32(4, 36 + buffer.length * 2, true);
+    writeString(8, 'WAVE');
+    writeString(12, 'fmt ');
     view.setUint32(16, 16, true);
     view.setUint16(20, 1, true);
     view.setUint16(22, 1, true);
-    view.setUint32(24, audioBuffer.sampleRate, true);
-    view.setUint32(28, audioBuffer.sampleRate * 2, true);
+    view.setUint32(24, buffer.sampleRate, true);
+    view.setUint32(28, buffer.sampleRate * 2, true);
     view.setUint16(32, 2, true);
     view.setUint16(34, 16, true);
-    writeString(view, 36, 'data');
-    view.setUint32(40, audioBuffer.length * 2, true);
+    writeString(36, 'data');
+    view.setUint32(40, buffer.length * 2, true);
 
     let index = 44;
-    for (let i = 0; i < audioBuffer.length; i++) {
+    for (let i = 0; i < buffer.length; i++) {
         view.setInt16(index, channels[0][i] * 0x7fff, true);
         index += 2;
     }
@@ -261,166 +191,216 @@ function getWavBlob(audioBuffer) {
     return arrayBuffer;
 }
 
+function blobToUrl(arrayBuffer) {
+    return URL.createObjectURL(new Blob([arrayBuffer], { type: 'audio/wav' }));
+}
+
 async function analyzeCards() {
     if (selectedImages.length === 0) {
-        alert('Please select at least one image');
+        alert('Please upload at least one card image');
         return;
     }
 
     const loadingState = document.getElementById('loadingState');
-    const resultsSection = document.getElementById('resultsSection');
+    const resultsArea = document.getElementById('resultsArea');
+    const emptyState = document.getElementById('emptyState');
+    
     loadingState.style.display = 'flex';
+    emptyState.style.display = 'none';
+    resultsArea.style.display = 'none';
 
     try {
-        // Mock card analysis - Replace with real Claude Vision API
-        const mockCards = await getMockCardAnalysis();
+        // Call Claude Vision API to analyze cards
+        const cardData = await analyzeCardsWithClaude();
         
-        // Convert prices to selected currency
-        const convertedCards = mockCards.map(card => {
-            const convertedPrices = {};
-            const basePrice = card.basePrice || 150;
-            Object.keys(CURRENCIES).forEach(code => {
-                // Simple mock conversion
-                const rates = {
-                    'USD': 1,
-                    'EUR': 0.92,
-                    'GBP': 0.79,
-                    'JPY': 149.50,
-                    'CNY': 7.24,
-                    'AUD': 1.53,
-                    'CAD': 1.36,
-                    'CHF': 0.88,
-                    'INR': 83.12,
-                    'MXN': 17.05
-                };
-                convertedPrices[code] = basePrice * (rates[code] || 1) + (Math.random() * 50 - 25);
-            });
-            return {
-                ...card,
-                prices: convertedPrices
-            };
-        });
+        if (cardData.length === 0) {
+            alert('No cards detected. Please upload clearer images.');
+            loadingState.style.display = 'none';
+            return;
+        }
 
-        displayResults(convertedCards, selectedCurrency);
+        // Get market prices
+        const cardsWithPrices = await enrichCardsWithPrices(cardData);
+        
+        // Display results
+        displayResults(cardsWithPrices);
+        playCountingAnimation();
     } catch (error) {
-        console.error('Error analyzing cards:', error);
-        alert('Error analyzing cards. Please try again.');
+        console.error('Analysis error:', error);
+        alert('Error analyzing cards: ' + error.message);
     } finally {
         loadingState.style.display = 'none';
     }
 }
 
-function getMockCardAnalysis() {
-    // Mock data - Replace with real Claude Vision API call
+async function analyzeCardsWithClaude() {
+    const formData = new FormData();
+    
+    // Convert images to base64
+    const base64Images = await Promise.all(
+        selectedImages.map(file => fileToBase64(file))
+    );
+
+    // For demo purposes, return mock data
+    // In production, send to Claude Vision API
+    return mockCardAnalysis();
+}
+
+function fileToBase64(file) {
+    return new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.readAsDataURL(file);
+    });
+}
+
+function mockCardAnalysis() {
+    // Mock detected cards - replace with real Claude API
     return Promise.resolve([
         {
-            name: 'Cristiano Ronaldo',
+            player: 'Cristiano Ronaldo',
             year: 2008,
-            condition: 'Mint',
-            basePrice: 250,
-            image: 'https://via.placeholder.com/200x280?text=Ronaldo&bg=ff6b6b&text_color=fff'
-        },
-        {
-            name: 'Lionel Messi',
-            year: 2005,
+            brand: 'Panini',
             condition: 'Near Mint',
-            basePrice: 280,
-            image: 'https://via.placeholder.com/200x280?text=Messi&bg=4c6ef5&text_color=fff'
+            detected: true
         },
         {
-            name: 'Pelé',
-            year: 1970,
-            condition: 'Good',
-            basePrice: 180,
-            image: 'https://via.placeholder.com/200x280?text=Pele&bg=1f9e44&text_color=fff'
-        },
-        {
-            name: 'Diego Maradona',
-            year: 1986,
+            player: 'Lionel Messi',
+            year: 2005,
+            brand: 'Panini',
             condition: 'Excellent',
-            basePrice: 320,
-            image: 'https://via.placeholder.com/200x280?text=Maradona&bg=fab005&text_color=fff'
+            detected: true
         }
     ]);
 }
 
-function displayResults(cards, currency) {
-    const resultsSection = document.getElementById('resultsSection');
-    const cardsResults = document.getElementById('cardsResults');
+async function enrichCardsWithPrices(cards) {
+    // Mock prices - replace with real marketplace scraping
+    return cards.map(card => ({
+        ...card,
+        basePrice: Math.random() * 500 + 50,
+        eBayPrice: Math.random() * 400 + 60,
+        beckettPrice: Math.random() * 450 + 80,
+        comcPrice: Math.random() * 380 + 70
+    }));
+}
 
-    cardsResults.innerHTML = cards.map((card, idx) => `
-        <div class="card-result" style="animation-delay: ${idx * 0.1}s">
-            <img src="${card.image}" alt="${card.name}">
-            <div class="card-info">
-                <h3>${card.name}</h3>
-                <p>${card.year}</p>
-                <span class="card-condition">${card.condition}</span>
-            </div>
-            <div class="card-prices">
-                <div class="price-item">
-                    <label>${currency}</label>
-                    <div class="price-counter value" data-price="${card.prices[currency].toFixed(2)}">$0.00</div>
+function displayResults(cards) {
+    const resultsContainer = document.getElementById('resultsContainer');
+    const resultsArea = document.getElementById('resultsArea');
+    
+    const conditionMultiplier = {
+        'Mint': 1.0,
+        'Near Mint': 0.9,
+        'Excellent': 0.8,
+        'Very Good': 0.7,
+        'Good': 0.6,
+        'Fair': 0.4,
+        'Poor': 0.2
+    };
+
+    resultsContainer.innerHTML = cards.map((card, idx) => {
+        const multiplier = conditionMultiplier[card.condition] || 0.7;
+        const adjustedPrice = card.basePrice * multiplier;
+
+        return `
+            <div class="result-card" style="animation-delay: ${idx * 0.1}s">
+                <div class="result-header">
+                    <div class="result-image">
+                        <img src="https://via.placeholder.com/100x140?text=${encodeURIComponent(card.player)}">
+                    </div>
+                    <div class="result-info">
+                        <div class="result-title">${card.player}</div>
+                        <div class="result-meta">
+                            <div class="result-meta-item">
+                                <span class="result-meta-label">Year</span>
+                                <span class="result-meta-value">${card.year}</span>
+                            </div>
+                            <div class="result-meta-item">
+                                <span class="result-meta-label">Brand</span>
+                                <span class="result-meta-value">${card.brand}</span>
+                            </div>
+                        </div>
+                        <span class="condition-badge">${card.condition}</span>
+                    </div>
+                </div>
+                <div class="result-prices">
+                    <div class="price-item">
+                        <span class="price-label">Adjusted Price</span>
+                        <span class="price-value" data-price="${adjustedPrice.toFixed(2)}" data-currency="${selectedCurrency}">$0.00</span>
+                    </div>
                 </div>
             </div>
-        </div>
-    `).join('');
+        `;
+    }).join('');
 
-    resultsSection.style.display = 'block';
-    resultsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    playCountingAnimation();
+    resultsArea.style.display = 'block';
+    resultsArea.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
 function playCountingAnimation() {
-    const priceCounters = document.querySelectorAll('.price-counter');
-    const moneyAudio = document.getElementById('moneyCountingAudio');
-    const beepAudio = document.getElementById('beepAudio');
+    const priceValues = document.querySelectorAll('.price-value');
+    const moneySound = document.getElementById('moneySound');
+    const completeSound = document.getElementById('completeSound');
 
     let completedAnimations = 0;
 
-    priceCounters.forEach((counter, index) => {
-        const finalValue = parseFloat(counter.getAttribute('data-price'));
-        let currentValue = 0;
-        const duration = 2000; // 2 seconds
-        const steps = 50;
-        const increment = finalValue / steps;
-        let step = 0;
+    priceValues.forEach((element, index) => {
+        const finalPrice = parseFloat(element.getAttribute('data-price'));
+        let currentPrice = 0;
+        const duration = 1500;
+        const steps = 40;
+        const increment = finalPrice / steps;
 
-        // Play money sound with staggered start
+        // Play money sound with delay
         setTimeout(() => {
-            moneyAudio.currentTime = 0;
-            moneyAudio.play().catch(e => console.log('Money sound failed:', e));
-        }, index * 150);
+            moneySound.currentTime = 0;
+            moneySound.play().catch(() => {});
+        }, index * 100);
 
-        const interval = setInterval(() => {
-            currentValue += increment;
-            if (currentValue >= finalValue) {
-                currentValue = finalValue;
-            }
-            counter.textContent = formatPrice(currentValue);
-            step++;
+        const startTime = Date.now();
+        const animate = () => {
+            const elapsed = Date.now() - startTime;
+            const progress = Math.min(elapsed / duration, 1);
+            currentPrice = finalPrice * progress;
 
-            if (step >= steps) {
-                counter.textContent = formatPrice(finalValue);
-                clearInterval(interval);
+            element.textContent = formatCurrency(currentPrice, element.getAttribute('data-currency'));
+
+            if (progress < 1) {
+                requestAnimationFrame(animate);
+            } else {
+                element.textContent = formatCurrency(finalPrice, element.getAttribute('data-currency'));
                 completedAnimations++;
 
-                // Play beep when all animations complete
-                if (completedAnimations === priceCounters.length) {
+                if (completedAnimations === priceValues.length) {
                     setTimeout(() => {
-                        beepAudio.currentTime = 0;
-                        beepAudio.play().catch(e => console.log('Beep sound failed:', e));
-                    }, 300);
+                        completeSound.currentTime = 0;
+                        completeSound.play().catch(() => {});
+                    }, 200);
                 }
             }
-        }, duration / steps);
+        };
+        animate();
     });
 }
 
-function formatPrice(price) {
-    if (selectedCurrency === 'JPY' || selectedCurrency === 'CNY' || selectedCurrency === 'VND') {
-        return Math.round(price).toLocaleString();
-    }
-    return '$' + price.toFixed(2);
-}
+function formatCurrency(value, currency) {
+    const currencySymbols = {
+        'USD': '$',
+        'EUR': '€',
+        'GBP': '£',
+        'JPY': '¥',
+        'CNY': '¥',
+        'AUD': 'A$',
+        'CAD': 'C$',
+        'CHF': 'CHF',
+        'INR': '₹',
+        'MXN': '$'
+    };
 
-console.log('Football Card Price Checker loaded successfully! 🎉');
+    const symbol = currencySymbols[currency] || '$';
+    const isNoDecimal = ['JPY', 'CNY', 'KRW'];
+    const decimals = isNoDecimal.includes(currency) ? 0 : 2;
+    
+    return symbol + value.toFixed(decimals);
+}
