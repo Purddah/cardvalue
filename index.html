@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Football Card Valuation - Premium Card Analysis</title>
+    <title>Football Card Price Checker | AI-Powered Card Valuation</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container">
         <!-- Header -->
         <div class="header">
-            <div class="badge">AI-POWERED CARD VALUATION</div>
+            <div class="badge">🤖 AI-POWERED CARD VALUATION</div>
             <h1>Football Card<br><span class="highlight">Price Checker</span></h1>
             <p>Upload your football cards or album pages. AI identifies each card, checks trusted marketplaces, and gives you real-time pricing in any currency.</p>
             <div class="marketplaces">
@@ -24,25 +24,32 @@
         <!-- Upload Section -->
         <div class="card-section">
             <div class="section-header">
+                <div class="icon">📤</div>
                 <h2>Upload Your Cards</h2>
                 <p>Photos of individual cards or full album pages</p>
             </div>
 
             <div class="upload-area" id="uploadArea">
                 <div class="upload-content">
-                    <div class="upload-icon">↓</div>
+                    <div class="upload-icon">⬇️</div>
                     <p class="upload-text">Drop your card images here or click to browse</p>
                     <p class="upload-subtext">Supports JPG, PNG, WEBP • Single cards or album pages</p>
                 </div>
                 <input type="file" id="fileInput" multiple accept="image/jpeg,image/png,image/webp" hidden>
             </div>
 
+            <!-- Image Preview -->
+            <div id="imagePreview" class="image-preview" style="display: none;">
+                <h3>✅ Selected Images:</h3>
+                <div id="previewContainer" class="preview-container"></div>
+            </div>
+
             <div class="button-group">
                 <button class="btn btn-secondary" id="takePhotoBtn">
-                    TAKE PHOTO
+                    <span>📸</span> Take Photo
                 </button>
                 <button class="btn btn-secondary" id="browseBtn">
-                    BROWSE FILES
+                    <span>📁</span> Browse Files
                 </button>
             </div>
         </div>
@@ -50,26 +57,91 @@
         <!-- Currency Selector -->
         <div class="card-section">
             <div class="section-header">
+                <div class="icon">💱</div>
                 <h2>Select Currency</h2>
                 <p>Prices will be shown in your chosen currency</p>
             </div>
 
-            <select id="currencySelect" class="currency-select">
-                <option value="USD">USD - US Dollar</option>
-                <option value="EUR">EUR - Euro</option>
-                <option value="GBP">GBP - British Pound</option>
-                <option value="JPY">JPY - Japanese Yen</option>
-                <option value="CNY">CNY - Chinese Yuan</option>
-            </select>
+            <div class="currency-wrapper">
+                <select id="currencySelect" class="currency-select">
+                    <option value="AED">🇦🇪 AED - UAE Dirham</option>
+                    <option value="AFN">🇦🇫 AFN - Afghan Afghani</option>
+                    <option value="ALL">🇦🇱 ALL - Albanian Lek</option>
+                    <option value="AMD">🇦🇲 AMD - Armenian Dram</option>
+                    <option value="ARS">🇦🇷 ARS - Argentine Peso</option>
+                    <option value="AUD">🇦🇺 AUD - Australian Dollar</option>
+                    <option value="AZN">🇦🇿 AZN - Azerbaijani Manat</option>
+                    <option value="BAM">🇧🇦 BAM - Bosnia Mark</option>
+                    <option value="BDT">🇧🇩 BDT - Bangladeshi Taka</option>
+                    <option value="BGN">🇧🇬 BGN - Bulgarian Lev</option>
+                    <option value="BHD">🇧🇭 BHD - Bahraini Dinar</option>
+                    <option value="BRL">🇧🇷 BRL - Brazilian Real</option>
+                    <option value="BTC">₿ BTC - Bitcoin</option>
+                    <option value="CAD">🇨🇦 CAD - Canadian Dollar</option>
+                    <option value="CHF">🇨🇭 CHF - Swiss Franc</option>
+                    <option value="CLP">🇨🇱 CLP - Chilean Peso</option>
+                    <option value="CNY">🇨🇳 CNY - Chinese Yuan</option>
+                    <option value="COP">🇨🇴 COP - Colombian Peso</option>
+                    <option value="CRC">🇨🇷 CRC - Costa Rican Colón</option>
+                    <option value="CZK">🇨🇿 CZK - Czech Koruna</option>
+                    <option value="DKK">🇩🇰 DKK - Danish Krone</option>
+                    <option value="DOP">🇩🇴 DOP - Dominican Peso</option>
+                    <option value="EGP">🇪🇬 EGP - Egyptian Pound</option>
+                    <option value="EUR">🇪🇺 EUR - Euro</option>
+                    <option value="GBP">🇬🇧 GBP - British Pound</option>
+                    <option value="GEL">🇬🇪 GEL - Georgian Lari</option>
+                    <option value="GHS">🇬🇭 GHS - Ghanaian Cedi</option>
+                    <option value="HKD">🇭🇰 HKD - Hong Kong Dollar</option>
+                    <option value="HNL">🇭🇳 HNL - Honduran Lempira</option>
+                    <option value="HRK">🇭🇷 HRK - Croatian Kuna</option>
+                    <option value="HUF">🇭🇺 HUF - Hungarian Forint</option>
+                    <option value="IDR">🇮🇩 IDR - Indonesian Rupiah</option>
+                    <option value="ILS">🇮🇱 ILS - Israeli Shekel</option>
+                    <option value="INR">🇮🇳 INR - Indian Rupee</option>
+                    <option value="ISK">🇮🇸 ISK - Icelandic Króna</option>
+                    <option value="JPY">🇯🇵 JPY - Japanese Yen</option>
+                    <option value="KES">🇰🇪 KES - Kenyan Shilling</option>
+                    <option value="KRW">🇰🇷 KRW - South Korean Won</option>
+                    <option value="KWD">🇰🇼 KWD - Kuwaiti Dinar</option>
+                    <option value="KZT">🇰🇿 KZT - Kazakhstani Tenge</option>
+                    <option value="LBP">🇱🇧 LBP - Lebanese Pound</option>
+                    <option value="LKR">🇱🇰 LKR - Sri Lankan Rupee</option>
+                    <option value="MAD">🇲🇦 MAD - Moroccan Dirham</option>
+                    <option value="MXN">🇲🇽 MXN - Mexican Peso</option>
+                    <option value="MYR">🇲🇾 MYR - Malaysian Ringgit</option>
+                    <option value="NGN">🇳🇬 NGN - Nigerian Naira</option>
+                    <option value="NOK">🇳🇴 NOK - Norwegian Krone</option>
+                    <option value="NZD">🇳🇿 NZD - New Zealand Dollar</option>
+                    <option value="PEN">🇵🇪 PEN - Peruvian Sol</option>
+                    <option value="PHP">🇵🇭 PHP - Philippine Peso</option>
+                    <option value="PKR">🇵🇰 PKR - Pakistani Rupee</option>
+                    <option value="PLN">🇵🇱 PLN - Polish Zloty</option>
+                    <option value="RON">🇷🇴 RON - Romanian Leu</option>
+                    <option value="RUB">🇷🇺 RUB - Russian Ruble</option>
+                    <option value="SAR">🇸🇦 SAR - Saudi Riyal</option>
+                    <option value="SEK">🇸🇪 SEK - Swedish Krona</option>
+                    <option value="SGD">🇸🇬 SGD - Singapore Dollar</option>
+                    <option value="THB">🇹🇭 THB - Thai Baht</option>
+                    <option value="TRY">🇹🇷 TRY - Turkish Lira</option>
+                    <option value="TWD">🇹🇼 TWD - Taiwan Dollar</option>
+                    <option value="UAH">🇺🇦 UAH - Ukrainian Hryvnia</option>
+                    <option value="USD" selected>🇺🇸 USD - US Dollar</option>
+                    <option value="UYU">🇺🇾 UYU - Uruguayan Peso</option>
+                    <option value="VND">🇻🇳 VND - Vietnamese Dong</option>
+                    <option value="ZAR">🇿🇦 ZAR - South African Rand</option>
+                </select>
+                <span id="selectedCurrencyDisplay" class="currency-display">USD 🇺🇸</span>
+            </div>
 
             <button class="btn btn-primary" id="analyzeBtn">
-                ANALYZE & PRICE CARDS
+                <span>🔍</span> Analyze & Price Cards
             </button>
         </div>
 
         <!-- Results Section -->
         <div class="card-section" id="resultsSection" style="display: none;">
             <div class="section-header">
+                <div class="icon">✅</div>
                 <h2>Card Valuations</h2>
             </div>
 
